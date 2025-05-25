@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Block Blast Master</title>
+    <link rel="stylesheet" href="style-index.css" />
+  </head>
+  <body>
+    <header id="top-bar">
+      <div class="top-left-icons">
+        <div class="top-icon">
+          <img src="assets/images/Crown_Icon.png" alt="Icon Mahkota" />
+          <span id="best-score-display-game">0</span>
+        </div>
+      </div>
+      <div class="top-right-icons">
+        <div class="top-icon" id="settings-icon-button">
+          <img src="assets/images/Settings_Icon.png" alt="Icon Pengaturan" />
+        </div>
+        <div class="top-currency">
+          <img src="assets/images/Diamond_Icon.png" alt="Icon Diamond" />
+        </div>
+      </div>
+    </header>
+
+    <main id="main-menu">
+      <div id="central-box">
+        <div id="game-logo-central" class="hidden">
+          <img
+            src="assets/images/block_blast_logo.png"
+            alt="Logo Game Block Blast Master"
+          />
+        </div>
+        <button id="start-game-button" class="hidden">
+          <img src="assets/images/play.png" alt="Main Game" />
+          <span>Mulai</span>
+        </button>
+      </div>
+      <div class="menu-bottom-graphics"></div>
+    </main>
+
+    <div id="settings-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <h2>Pengaturan Suara</h2>
+        <div class="setting-item">
+          <img src="assets/images/music_icon.png" alt="Icon Musik" />
+          <label for="music-volume">Musik:</label>
+          <input
+            type="range"
+            id="music-volume"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+          />
+        </div>
+        <div class="setting-item">
+          <img src="assets/images/sfx_icon.png" alt="Icon Efek Suara" />
+          <label for="sfx-volume">Efek Suara:</label>
+          <input
+            type="range"
+            id="sfx-volume"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+          />
+        </div>
+        <button id="close-settings-modal">Tutup</button>
+      </div>
+    </div>
+
+    <audio id="click-sound" src="assets/audio/click.mp3" preload="auto"></audio>
+    <audio
+      id="background-music"
+      src="assets/audio/background_music.mp3"
+      loop
+      autoplay
+    ></audio>
+
+    <script src="script-index.js"></script>
+  </body>
+</html>

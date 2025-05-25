@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Over - Block Blast Master</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="game-over-modal" class="modal-overlay">
+      <div class="modal-content game-over-content">
+        <img
+          src="../assets/images/Crown_Icon.png"
+          alt="Crown Icon"
+          class="game-over-crown"
+        />
+        <h2 class="game-over-title">Game over</h2>
+        <div class="score-display">
+          <p>Your Score</p>
+          <span id="final-score">12345</span>
+        </div>
+        <button
+          id="back-to-menu-button"
+          class="modal-button back-to-menu-button"
+        >
+          <img
+            src="../assets/images/home_icon.png"
+            alt="Menu Icon"
+            class="button-icon"
+          />
+          Back to Menu
+        </button>
+
+        <h3 class="break-record-text">Break The Record</h3>
+      </div>
+    </div>
+
+    <audio
+      id="game-over-sound"
+      src="../assets/audio/GameOver_sound.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="game-over-music"
+      src="../assets/audio/gameover_music.mp3"
+      loop
+      preload="auto"
+    ></audio>
+
+    <script src="game_over.js"></script>
+  </body>
+</html>

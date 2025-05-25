@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Block Blast Master - Main Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header id="top-bar-game">
+      <div class="top-left-info">
+        <div class="info-item">
+          <img
+            src="../assets/images/Crown_Icon.png"
+            alt="Ikon Mahkota untuk Skor Terbaik"
+            class="icon-small"
+          />
+          <span id="best-score-display-game">0</span>
+        </div>
+        <div class="info-item">
+          <span class="score-label">SKOR:</span>
+          <span id="current-score">0</span>
+        </div>
+      </div>
+      <div class="top-right-icons">
+        <button
+          id="pause-button"
+          class="game-control-button icon-button"
+          aria-label="Jeda Game"
+        >
+          <img
+            src="../assets/images/pause_icon.png"
+            alt="Ikon Jeda"
+            class="icon-small"
+          />
+        </button>
+        <button
+          id="resume-button"
+          class="game-control-button icon-button hidden"
+          aria-label="Lanjutkan Game"
+        >
+          <img
+            src="../assets/images/play_icon.png"
+            alt="Ikon Lanjut"
+            class="icon-small"
+          />
+        </button>
+        <button
+          id="settings-button"
+          class="game-control-button icon-button"
+          aria-label="Pengaturan Game"
+        >
+          <img
+            src="../assets/images/Settings_Icon.png"
+            alt="Ikon Pengaturan"
+            class="icon-small"
+          />
+        </button>
+        <button
+          id="restart-button"
+          class="game-control-button icon-button"
+          aria-label="Mulai Ulang Game"
+        >
+          <img
+            src="../assets/images/home_icon.png"
+            alt="Ikon Beranda"
+            class="icon-small"
+          />
+        </button>
+        <div class="top-currency info-item">
+          <img
+            src="../assets/images/Diamond_Icon.png"
+            alt="Ikon Berlian"
+            class="icon-small"
+          />
+        </div>
+      </div>
+    </header>
+
+    <main id="game-main-area">
+      <div id="game-container">
+        <div id="game-board-wrapper">
+          <div id="game-board"></div>
+        </div>
+
+        <div id="next-blocks-panel">
+          <p class="next-blocks-title">BLOK SELANJUTNYA:</p>
+          <div id="next-blocks-container"></div>
+        </div>
+      </div>
+    </main>
+
+    <div id="settings-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <span class="close-button" id="close-modal-top">&times;</span>
+        <h2>Pengaturan</h2>
+        <div class="settings-layout">
+          <div class="settings-left-panel">
+            <div class="setting-item">
+              <label for="music-volume">Musik Latar:</label>
+              <input
+                type="range"
+                id="music-volume"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.5"
+              />
+            </div>
+            <div class="setting-item">
+              <label for="sfx-volume">Efek Suara:</label>
+              <input
+                type="range"
+                id="sfx-volume"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.75"
+              />
+            </div>
+          </div>
+          <div class="settings-right-panel">
+            <div class="setting-block mini-option-block">
+              <h3>Tips Mini</h3>
+              <p>
+                Pikirkan Beberapa Langkah ke Depan Jangan hanya fokus pada blok
+                yang sedang Anda pegang
+              </p>
+            </div>
+          </div>
+        </div>
+        <button id="close-modal" class="modal-button">Tutup</button>
+      </div>
+    </div>
+
+    <audio
+      id="game-music"
+      src="../assets/audio/background_music.mp3"
+      loop
+      preload="auto"
+    ></audio>
+    <audio
+      id="block-clear-sound"
+      src="../assets/audio/block_clear.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="place-block-sound"
+      src="../assets/audio/place_block.mp3"
+      preload="auto"
+    ></audio>
+
+    <script src="script.js"></script>
+  </body>
+</html>
