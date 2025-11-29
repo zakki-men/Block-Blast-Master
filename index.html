@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Block Blast Master</title>
-    <link rel="stylesheet" href="style-index.css" />
+    <title>Block Blast Master | Menu Utama</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header id="top-bar">
       <div class="top-left-icons">
         <div class="top-icon">
-          <img src="assets/images/Crown_Icon.png" alt="Icon Mahkota" />
-          <span id="best-score-display-game">0</span>
+          <img src="assets/images/Crown_Icon.png" alt="Icon Mahkota Skor Terbaik" />
+          <span id="best-score-display">0</span>
         </div>
       </div>
       <div class="top-right-icons">
@@ -20,6 +20,7 @@
         </div>
         <div class="top-currency">
           <img src="assets/images/Diamond_Icon.png" alt="Icon Diamond" />
+          <span id="diamond-count">0</span>
         </div>
       </div>
     </header>
@@ -72,13 +73,8 @@
     </div>
 
     <audio id="click-sound" src="assets/audio/click.mp3" preload="auto"></audio>
-    <audio
-      id="background-music"
-      src="assets/audio/background_music.mp3"
-      loop
-      autoplay
-    ></audio>
+    <audio id="background-music" src="assets/audio/background_music.mp3" loop preload="auto"></audio>
 
-    <script src="script-index.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
