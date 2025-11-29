@@ -1,168 +1,167 @@
-// script.js
+// script-index.js
 
-// --- 1. Dapatkan Elemen DOM (PENTING: Harus sesuai dengan ID di HTML) ---
+// --- Dapatkan elemen yang dibutuhkan untuk halaman awal ---
 const startGameButton = document.getElementById("start-game-button");
 const gameLogoCentral = document.getElementById("game-logo-central");
-const bestScoreDisplay = document.getElementById("best-score-display"); // ID Sesuai HTML baru
-const diamondCountDisplay = document.getElementById("diamond-count"); // Elemen baru (Diamond)
+// PERBAIKAN: Mengubah ID elemen untuk best score agar konsisten dengan game.html
+const bestScoreDisplay = document.getElementById("best-score-display-game");
 
-// Elemen Pengaturan Suara
+// Elemen-elemen untuk Pengaturan Suara
 const settingsIconButton = document.getElementById("settings-icon-button");
 const settingsModal = document.getElementById("settings-modal");
-const closeSettingsModalButton = document.getElementById("close-settings-modal");
+const closeSettingsModalButton = document.getElementById(
+  "close-settings-modal"
+);
 const musicVolumeSlider = document.getElementById("music-volume");
 const sfxVolumeSlider = document.getElementById("sfx-volume");
 
 // Elemen Audio
 const clickSound = document.getElementById("click-sound");
-const backgroundMusic = document.getElementById("background-music");
+const backgroundMusic = document.getElementById("background-music"); // Elemen audio musik latar
 
-// --- 2. Konstanta (Untuk konsistensi Local Storage) ---
-const LS_PREFIX = "blockBlast"; 
+// --- Fungsi Navigasi Halaman ---
+function navigateTo(path) {
+  window.location.href = path;
+}
 
-// --- 3. Fungsi Utilitas ---
+// --- Fungsi untuk mendapatkan Best Score dari localStorage ---
+function getBestScore() {
+  // PERBAIKAN: Menggunakan kunci localStorage yang konsisten
+  return parseInt(localStorage.getItem("blockBlastBestScore") || "0");
+}
 
-const navigateTo = (path) => {
-  window.location.href = path;
-};
+// --- Fungsi untuk Mengatur dan Menyimpan Volume ---
+function saveVolumeSettings(type, value) {
+  // PERBAIKAN: Menggunakan kunci localStorage yang konsisten
+  localStorage.setItem(
+    `blockBlast${type.charAt(0).toUpperCase() + type.slice(1)}Volume`,
+    value
+  );
+  applyVolumeSettings(type, value);
+}
 
-// Fungsi utilitas untuk memutar SFX klik (digunakan berulang kali, menghemat baris kode)
-const playClickSFX = () => {
-  if (clickSound) {
-    clickSound.currentTime = 0; // Memastikan suara dapat diputar ulang segera
-    clickSound.play().catch((e) => console.error("Error playing click sound:", e));
-  }
-};
+function loadVolumeSettings() {
+  // PERBAIKAN: Menggunakan kunci localStorage yang konsisten
+  const musicVol = parseFloat(
+    localStorage.getItem("blockBlastMusicVolume") || "0.5"
+  );
+  const sfxVol = parseFloat(
+    localStorage.getItem("blockBlastSfxVolume") || "0.5"
+  );
 
-// --- 4. Manajemen Data (Local Storage) ---
+  // Atur nilai slider sesuai dengan yang dimuat
+  if (musicVolumeSlider) musicVolumeSlider.value = musicVol;
+  if (sfxVolumeSlider) sfxVolumeSlider.value = sfxVol;
 
-const getBestScore = () => {
-  // Mengambil skor terbaik, default 0
-  return parseInt(localStorage.getItem(`${LS_PREFIX}BestScore`) || "0");
-};
+  // Terapkan volume ke elemen audio
+  applyVolumeSettings("music", musicVol);
+  applyVolumeSettings("sfx", sfxVol);
+}
 
-const getDiamondCount = () => {
-  // Mengambil jumlah berlian, default 100 jika belum ada
-  return parseInt(localStorage.getItem(`${LS_PREFIX}DiamondCount`) || "100"); 
-};
+function applyVolumeSettings(type, value) {
+  if (type === "music" && backgroundMusic) {
+    backgroundMusic.volume = value;
+  }
+  if (type === "sfx" && clickSound) {
+    clickSound.volume = value;
+  }
+  // If there are other sounds later (e.g., game over sound), add them here
+}
 
-// --- 5. Manajemen Volume ---
-
-const saveVolumeSettings = (type, value) => {
-  // Menyimpan volume ke Local Storage
-  localStorage.setItem(`${LS_PREFIX}${type.charAt(0).toUpperCase() + type.slice(1)}Volume`, value);
-  applyVolumeSettings(type, value);
-};
-
-const applyVolumeSettings = (type, value) => {
-  // Menerapkan volume ke elemen audio
-  if (type === "music" && backgroundMusic) {
-    backgroundMusic.volume = value;
-  }
-  if (type === "sfx" && clickSound) {
-    clickSound.volume = value;
-  }
-};
-
-const loadVolumeSettings = () => {
-  // Memuat volume dari Local Storage (default 0.5 jika belum ada)
-  const musicVol = parseFloat(localStorage.getItem(`${LS_PREFIX}MusicVolume`) || "0.5");
-  const sfxVol = parseFloat(localStorage.getItem(`${LS_PREFIX}SfxVolume`) || "0.5");
-
-  if (musicVolumeSlider) musicVolumeSlider.value = musicVol;
-  if (sfxVolumeSlider) sfxVolumeSlider.value = sfxVol;
-
-  applyVolumeSettings("music", musicVol);
-  applyVolumeSettings("sfx", sfxVol);
-};
-
-// --- 6. Inisialisasi Halaman (DOM LOADED) ---
-
+// --- Inisialisasi Halaman Awal Setelah DOM Dimuat ---
 document.addEventListener("DOMContentLoaded", () => {
-  // A. Tampilkan Data Awal (Skor dan Diamond)
-  if (bestScoreDisplay) {
-    bestScoreDisplay.textContent = getBestScore();
-  }
-  if (diamondCountDisplay) {
-    diamondCountDisplay.textContent = getDiamondCount();
-  }
+  // 1. Tampilkan Best Score saat halaman awal dimuat
+  if (bestScoreDisplay) {
+    bestScoreDisplay.textContent = getBestScore();
+  }
 
-  // B. Muat dan Terapkan Pengaturan Volume
-  loadVolumeSettings();
+  // 2. Muat dan Terapkan Pengaturan Volume
+  loadVolumeSettings();
 
-  // C. Animasi Fade-In (Logo dan Tombol Start)
-  // setTimeout 100ms memberikan waktu bagi browser untuk merender elemen sebelum transisi dimulai
-  setTimeout(() => {
-    if (gameLogoCentral) {
-      gameLogoCentral.classList.remove("hidden");
-      gameLogoCentral.classList.add("visible");
-    }
-    if (startGameButton) {
-      startGameButton.classList.remove("hidden");
-      startGameButton.classList.add("visible");
-    }
-  }, 100);
+  // 3. Putar Musik Latar Otomatis
+  if (backgroundMusic) {
+    backgroundMusic.play().catch((e) => {
+      console.warn(
+        "Background music autoplay prevented. User interaction required:",
+        e
+      );
+    });
+  }
 
-  // D. Audio Autoplay (Percobaan putar musik, mungkin diblokir browser)
-  if (backgroundMusic) {
-    backgroundMusic.play().catch((e) => {
-      console.warn("Autoplay musik diblokir. Membutuhkan interaksi pengguna.", e);
-    });
-  }
+  // 4. Animasi Fade-In untuk Logo dan Tombol
+  setTimeout(() => {
+    if (gameLogoCentral) {
+      gameLogoCentral.classList.remove("hidden");
+      gameLogoCentral.classList.add("visible");
+    }
+    if (startGameButton) {
+      startGameButton.classList.remove("hidden");
+      startGameButton.classList.add("visible");
+    }
+  }, 100);
 
-  // E. Event Listeners (Logika Interaksi Pengguna)
+  // 5. Event Listener untuk Tombol "Mulai"
+  if (startGameButton) {
+    startGameButton.addEventListener("click", () => {
+      if (clickSound) {
+        clickSound.currentTime = 0;
+        clickSound
+          .play()
+          .catch((e) => console.error("Error playing click sound:", e));
+      }
+      if (backgroundMusic) {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+      }
+      setTimeout(() => {
+        navigateTo("Home_Layar_Game/index_game.html"); // Navigate to the game page
+      }, 300);
+    });
+  }
 
-  // 1. Tombol "Mulai Game"
-  if (startGameButton) {
-    startGameButton.addEventListener("click", () => {
-      playClickSFX();
-      
-      // Hentikan musik menu saat navigasi
-      if (backgroundMusic) {
-        backgroundMusic.pause();
-        backgroundMusic.currentTime = 0;
-      }
+  // 6. Event Listener untuk Tombol Pengaturan (Membuka Pop-up)
+  if (settingsIconButton && settingsModal) {
+    settingsIconButton.addEventListener("click", () => {
+      if (clickSound) {
+        clickSound.currentTime = 0;
+        clickSound
+          .play()
+          .catch((e) => console.error("Error playing click sound:", e));
+      }
+      settingsModal.classList.remove("hidden"); // Show pop-up
+    });
+  }
 
-      // Navigasi ke halaman game utama
-      setTimeout(() => {
-        navigateTo("Home_Layar_Game/index_game.html");
-      }, 300);
-    });
-  }
+  // 7. Event Listener untuk Tombol Tutup Pop-up
+  if (closeSettingsModalButton && settingsModal) {
+    closeSettingsModalButton.addEventListener("click", () => {
+      if (clickSound) {
+        clickSound.currentTime = 0;
+        clickSound
+          .play()
+          .catch((e) => console.error("Error playing click sound:", e));
+      }
+      settingsModal.classList.add("hidden"); // Hide pop-up
+    });
+  }
 
-  // 2. Tombol Pengaturan (Membuka Modal)
-  if (settingsIconButton && settingsModal) {
-    settingsIconButton.addEventListener("click", () => {
-      playClickSFX();
-      settingsModal.classList.remove("hidden");
-      
-      // Jika musik diblokir, coba putar musik di sini (Interaksi pertama pengguna)
-      if (backgroundMusic && backgroundMusic.paused) {
-          backgroundMusic.play().catch((e) => console.log("Gagal memutar musik setelah interaksi."));
-      }
-    });
-  }
+  // 8. Event Listener untuk Mengubah Volume Slider Musik
+  if (musicVolumeSlider) {
+    musicVolumeSlider.addEventListener("input", (event) => {
+      saveVolumeSettings("music", event.target.value);
+    });
+  }
 
-  // 3. Tombol Tutup Modal
-  if (closeSettingsModalButton && settingsModal) {
-    closeSettingsModalButton.addEventListener("click", () => {
-      playClickSFX();
-      settingsModal.classList.add("hidden");
-    });
-  }
-  
-  // 4. Slider Volume Musik (Simpan dan Terapkan)
-  if (musicVolumeSlider) {
-    musicVolumeSlider.addEventListener("input", (event) => {
-      saveVolumeSettings("music", event.target.value);
-    });
-  }
-
-  // 5. Slider Volume Efek Suara (Simpan, Terapkan, dan Putar SFX uji coba)
-  if (sfxVolumeSlider) {
-    sfxVolumeSlider.addEventListener("input", (event) => {
-      saveVolumeSettings("sfx", event.target.value);
-      playClickSFX(); // Putar SFX uji coba agar pengguna bisa mendengar perubahan volume
-    });
-  }
+  // 9. Event Listener untuk Mengubah Volume Slider Efek Suara
+  if (sfxVolumeSlider) {
+    sfxVolumeSlider.addEventListener("input", (event) => {
+      saveVolumeSettings("sfx", event.target.value);
+      if (clickSound) {
+        clickSound.currentTime = 0;
+        clickSound
+          .play()
+          .catch((e) => console.error("Error playing click sound:", e));
+      }
+    });
+  }
 });
