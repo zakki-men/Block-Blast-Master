@@ -1,0 +1,731 @@
+/* ======================================================
+   BLOCK BLAST — style.css (versi perbaikan)
+   ====================================================== */
+
+/* --- Variabel CSS Global --- */
+:root {
+  /* Warna Dasar */
+  --primary-bg-dark:    #1a237e;
+  --secondary-bg-dark:  #3949ab;
+  --board-bg-dark:      #161d6f;
+  --panel-bg-dark:      #1e2459;
+  --text-light:         #e8eaf6;
+  --text-muted:         #9fa8da;
+  --gold-text:          #ffd740;
+  --diamond-color:      #80deea;
+
+  /* Border Aksen */
+  --accent-border-purple: #9c27b0;
+
+  /* Warna Blok */
+  --block-color-1: #ef5350;
+  --block-color-2: #66bb6a;
+  --block-color-3: #42a5f5;
+  --block-color-4: #ffa726;
+  --block-color-5: #ab47bc;
+  --block-color-6: #26c6da;
+  --block-color-7: #ffee58;
+
+  /* Ukuran (ditimpa oleh JS) */
+  --cell-size:         30px;
+  --preview-cell-size: 20px;
+  --BOARD_ROWS:        10;
+  --BOARD_COLS:        10;
+
+  /* Ikon */
+  --icon-small-size:        20px;
+  --icon-medium-size:       26px;
+  --mobile-icon-small-size: 17px;
+
+  /* Transisi */
+  --transition-speed:    0.25s;
+  --animation-duration:  2.2s;
+
+  /* Highlight */
+  --highlight-color:         rgba(135, 206, 250, 0.38);
+  --invalid-highlight-color: rgba(255, 0, 0, 0.45);
+}
+
+/* --- Reset & Dasar --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding-top: 72px;
+  padding-bottom: 40px;
+  background: radial-gradient(ellipse at 50% 0%, var(--secondary-bg-dark) 0%, var(--primary-bg-dark) 45%, #0d1257 100%);
+  color: var(--text-light);
+  overflow-x: hidden;
+}
+
+/* ======================================================
+   TOP BAR
+   ====================================================== */
+#top-bar-game {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 18px;
+  background: rgba(10, 14, 60, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(92, 107, 192, 0.3);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+  z-index: 100;
+  font-weight: 600;
+}
+
+.top-left-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Pill info (skor & terbaik) */
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 13px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.35);
+}
+
+.score-label {
+  font-size: 0.72em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+#current-score,
+#best-score-display-game {
+  font-size: 1.05em;
+  font-weight: 700;
+  color: var(--gold-text);
+  text-shadow: 0 0 8px rgba(255, 215, 64, 0.65);
+  line-height: 1;
+}
+
+/* Ikon kolom kanan */
+.top-right-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.top-icon,
+.game-control-button.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.32);
+  transition: background var(--transition-speed), transform 0.15s;
+}
+
+.top-currency {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  background: rgba(128, 222, 234, 0.1);
+  border: 1px solid rgba(128, 222, 234, 0.28);
+  border-radius: 999px;
+  font-size: 0.95em;
+  font-weight: 700;
+  color: var(--diamond-color);
+  text-shadow: 0 0 8px rgba(128, 222, 234, 0.5);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.32);
+  transition: background var(--transition-speed), transform 0.15s;
+}
+
+/* Ukuran gambar ikon */
+.top-icon img,
+.top-currency img,
+.game-control-button.icon-button img,
+.info-item img {
+  height: var(--icon-small-size);
+  width: auto;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.45));
+}
+
+.icon-medium img { height: var(--icon-medium-size); }
+
+.top-icon:hover,
+.top-currency:hover,
+.game-control-button.icon-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.1);
+}
+
+/* ======================================================
+   AREA UTAMA GAME
+   ====================================================== */
+#game-main-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 18px;
+}
+
+/* Judul */
+h1 {
+  margin: 20px 0 16px;
+  font-size: 3em;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: #fff;
+  text-shadow:
+    0 0 12px rgba(140, 160, 255, 0.9),
+    0 0 32px rgba(92, 107, 192, 0.7),
+    2px 3px 0 rgba(0,0,0,0.5);
+  animation: glow var(--animation-duration) ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px rgba(130,150,255,0.6), 0 0 24px rgba(92,107,192,0.4), 2px 3px 0 rgba(0,0,0,0.5); }
+  to   { text-shadow: 0 0 18px rgba(160,180,255,1),   0 0 44px rgba(120,140,255,0.9), 2px 3px 0 rgba(0,0,0,0.5); }
+}
+
+/* ======================================================
+   GAME CONTAINER
+   ====================================================== */
+#game-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 28px;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 8px;
+}
+
+/* ======================================================
+   PAPAN GAME – WRAPPER
+   ====================================================== */
+#game-board-wrapper {
+  position: relative;
+  padding: 16px;
+  background: var(--panel-bg-dark);
+  border-radius: 22px;
+  box-shadow:
+    inset 0 0 28px rgba(0,0,0,0.65),
+    0 8px 28px rgba(0,0,0,0.55),
+    0 0 0 2.5px rgba(156, 39, 176, 0.65);
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+/* Animated gradient border */
+#game-board-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #ce93d8, #7986cb, #4dd0e1, #7986cb, #ce93d8);
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: gradient-border 8s linear infinite;
+}
+
+@keyframes gradient-border {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+/* ======================================================
+   PAPAN GAME – GRID
+   ====================================================== */
+#game-board {
+  display: grid;
+  width:  calc(var(--cell-size) * var(--BOARD_COLS));
+  height: calc(var(--cell-size) * var(--BOARD_ROWS));
+  background: var(--board-bg-dark);
+  border: 2px solid rgba(92, 107, 192, 0.5);
+  border-radius: 10px;
+  box-shadow: inset 0 0 18px rgba(0,0,0,0.55);
+}
+
+.grid-cell {
+  width:  var(--cell-size);
+  height: var(--cell-size);
+  background: rgba(0,0,0,0.12);
+  border: 0.5px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s ease;
+}
+
+/* Blok yang sudah diletakkan */
+.placed-block {
+  width: 88%;
+  height: 88%;
+  border-radius: 5px;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    inset 0 -2px 4px rgba(0,0,0,0.45),
+    0 3px 8px rgba(0,0,0,0.4);
+  animation: pop-in 0.18s ease-out;
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Warna blok dengan gradient halus */
+.block-color-1 { background: linear-gradient(135deg, #ef9a9a, var(--block-color-1)); }
+.block-color-2 { background: linear-gradient(135deg, #a5d6a7, var(--block-color-2)); }
+.block-color-3 { background: linear-gradient(135deg, #90caf9, var(--block-color-3)); }
+.block-color-4 { background: linear-gradient(135deg, #ffcc80, var(--block-color-4)); }
+.block-color-5 { background: linear-gradient(135deg, #ce93d8, var(--block-color-5)); }
+.block-color-6 { background: linear-gradient(135deg, #80deea, var(--block-color-6)); }
+.block-color-7 { background: linear-gradient(135deg, #fff59d, var(--block-color-7)); }
+
+/* ======================================================
+   PANEL BLOK BERIKUTNYA
+   ====================================================== */
+#next-blocks-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background: var(--panel-bg-dark);
+  border-radius: 22px;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,0.55),
+    0 8px 24px rgba(0,0,0,0.5),
+    0 0 0 2.5px rgba(156, 39, 176, 0.6);
+  flex-shrink: 0;
+}
+
+#next-blocks-panel::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #7986cb, #ce93d8, #4dd0e1, #ce93d8, #7986cb);
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: gradient-border 8s linear infinite reverse;
+}
+
+#next-blocks-panel .next-blocks-title {
+  font-size: 0.7em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+#next-blocks-container {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Slot per blok */
+.next-block-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 115px;
+  height: 115px;
+  background: var(--board-bg-dark);
+  border-radius: 14px;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 0 14px rgba(0,0,0,0.55),
+    0 5px 12px rgba(0,0,0,0.42);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: grab;
+}
+
+.next-block-slot.empty {
+  opacity: 0.45;
+  transform: scale(0.88);
+  border-style: dashed;
+}
+
+.next-block-slot:hover:not(.empty) {
+  transform: scale(1.07);
+  box-shadow: inset 0 0 14px rgba(0,0,0,0.55), 0 8px 20px rgba(0,0,0,0.5);
+}
+
+/* Preview blok yang bisa di-drag */
+.draggable-block-preview {
+  display: grid;
+  position: absolute;
+  background: transparent;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.45);
+  transition: transform 0.1s ease;
+}
+
+.draggable-block-preview.dragging {
+  cursor: grabbing;
+  opacity: 0.92;
+  z-index: 1000;
+  transform: none;
+  pointer-events: none;
+  filter: brightness(1.15) drop-shadow(0 6px 18px rgba(0,0,0,0.55));
+}
+
+/* Sel dalam preview blok */
+.block-cell-preview {
+  width:  var(--preview-cell-size);
+  height: var(--preview-cell-size);
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 3px rgba(255,255,255,0.18),
+    inset 0 -1px 3px rgba(0,0,0,0.4);
+}
+
+/* ======================================================
+   HIGHLIGHT PAPAN
+   ====================================================== */
+.highlight-cell {
+  background-color: var(--highlight-color);
+  border: 1px solid rgba(135, 206, 250, 0.8);
+  animation: pulse-highlight 0.8s ease-in-out infinite alternate;
+}
+
+.invalid-placement {
+  background-color: var(--invalid-highlight-color);
+  border: 1px solid rgba(255, 60, 60, 0.9);
+}
+
+@keyframes pulse-highlight {
+  from { opacity: 0.35; }
+  to   { opacity: 0.7;  }
+}
+
+/* ======================================================
+   MODAL / POP-UP
+   ====================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.modal-content {
+  position: relative;
+  padding: 32px;
+  background: var(--panel-bg-dark);
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.65);
+  width: 90%;
+  max-width: 440px;
+  color: var(--text-light);
+  border: 2.5px solid #8e24aa;
+  animation: scale-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.75); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.modal-content h2 {
+  margin: 0 0 24px;
+  color: #ffd740;
+  font-size: 2em;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+}
+
+#close-modal-top {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 2.2em;
+  color: var(--text-light);
+  cursor: pointer;
+  background: none;
+  border: none;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.65;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+#close-modal-top:hover {
+  opacity: 1;
+  transform: scale(1.12) rotate(8deg);
+}
+
+/* Pengaturan */
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.05em;
+}
+
+.setting-item label {
+  flex: 1;
+  text-align: left;
+  margin-right: 15px;
+}
+
+.setting-item input[type="range"] {
+  flex: 2;
+  width: 100%;
+  height: 8px;
+  background: var(--secondary-bg-dark);
+  border-radius: 4px;
+  outline: none;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.setting-item input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--block-color-2);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border: 2px solid white;
+}
+
+.setting-item input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--block-color-2);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border: 2px solid white;
+}
+
+.setting-block {
+  margin: 24px 0;
+  text-align: left;
+  padding: 14px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+
+.setting-block h3 {
+  margin-top: 0;
+  color: var(--gold-text);
+  font-size: 1.2em;
+}
+
+.settings-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.settings-left-panel,
+.settings-right-panel {
+  flex: 1;
+  min-width: 180px;
+}
+
+.modal-button {
+  padding: 11px 24px;
+  background: var(--block-color-1);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition-speed), transform 0.12s, box-shadow 0.2s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.32);
+  margin-top: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.modal-button:hover {
+  background: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(0,0,0,0.4);
+}
+
+/* ======================================================
+   UTILITY
+   ====================================================== */
+.hidden { display: none !important; }
+
+/* ======================================================
+   RESPONSIVE — DESKTOP (≥ 768px)
+   ====================================================== */
+@media (min-width: 768px) {
+  body { padding-top: 70px; }
+
+  #top-bar-game { padding: 10px 36px; font-size: 1.05em; }
+  .top-left-info { gap: 14px; }
+  .info-item { padding: 6px 15px; }
+  .top-right-icons { gap: 10px; }
+
+  .top-icon,
+  .game-control-button.icon-button { width: 36px; height: 36px; }
+
+  h1 { font-size: 3.4em; margin-top: 28px; }
+
+  #game-container { gap: 32px; max-width: 960px; }
+
+  #game-board-wrapper { padding: 18px; }
+
+  #next-blocks-panel { padding: 18px 16px; }
+
+  .next-block-slot { width: 120px; height: 120px; }
+
+  .modal-content { max-width: 460px; }
+}
+
+/* ======================================================
+   RESPONSIVE — LAYAR BESAR (≥ 1200px)
+   ====================================================== */
+@media (min-width: 1200px) {
+  #game-container { max-width: 1200px; gap: 48px; }
+  .next-block-slot { width: 130px; height: 130px; }
+}
+
+/* ======================================================
+   RESPONSIVE — MOBILE PORTRAIT (< 768px)
+   ====================================================== */
+@media (max-width: 767px) {
+  body { padding-top: 52px; }
+
+  #top-bar-game { padding: 6px 12px; font-size: 0.82em; }
+  .top-left-info { gap: 7px; }
+
+  .info-item {
+    padding: 4px 10px;
+    border-radius: 999px;
+    gap: 5px;
+  }
+
+  .score-label { font-size: 0.68em; }
+
+  #current-score,
+  #best-score-display-game { font-size: 0.95em; }
+
+  .top-right-icons { gap: 6px; }
+
+  .top-icon,
+  .game-control-button.icon-button { width: 30px; height: 30px; }
+
+  .top-currency { padding: 4px 10px; font-size: 0.88em; }
+
+  .top-icon img,
+  .top-currency img,
+  .game-control-button.icon-button img,
+  .info-item img {
+    height: var(--mobile-icon-small-size);
+  }
+
+  h1 { font-size: 2em; margin: 14px 0 12px; letter-spacing: 3px; }
+
+  #game-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 0 10px;
+  }
+
+  #game-board-wrapper { padding: 12px; border-radius: 16px; }
+
+  #next-blocks-panel { padding: 10px 12px; border-radius: 16px; }
+
+  #next-blocks-container { gap: 8px; }
+
+  .next-block-slot { width: 88px; height: 88px; border-radius: 10px; }
+
+  .modal-content { padding: 22px; max-width: 310px; border-radius: 16px; }
+  .modal-content h2 { font-size: 1.7em; margin-bottom: 14px; }
+  #close-modal-top { font-size: 1.9em; top: 8px; right: 12px; }
+  .setting-item { font-size: 0.88em; margin-bottom: 14px; }
+  .modal-button { padding: 10px 20px; font-size: 0.9em; }
+}
+
+/* ======================================================
+   RESPONSIVE — MOBILE LANDSCAPE
+   ====================================================== */
+@media (max-width: 767px) and (orientation: landscape) {
+  body { padding-top: 42px; padding-bottom: 8px; }
+
+  #top-bar-game { padding: 4px 10px; font-size: 0.76em; }
+  .top-left-info { gap: 5px; }
+  .top-right-icons { gap: 5px; }
+
+  .top-icon,
+  .game-control-button.icon-button { width: 28px; height: 28px; }
+
+  .top-currency { padding: 3px 8px; font-size: 0.82em; }
+
+  h1 { font-size: 1.8em; margin: 8px 0 6px; }
+
+  #game-container {
+    flex-direction: row;
+    gap: 12px;
+    max-width: 96%;
+    padding: 0 8px;
+  }
+
+  #game-board-wrapper { padding: 10px; border-radius: 12px; }
+
+  #next-blocks-panel {
+    padding: 8px;
+    flex-direction: column;
+    max-width: 110px;
+    border-radius: 12px;
+  }
+
+  #next-blocks-container { flex-direction: column; gap: 6px; }
+
+  .next-block-slot { width: 78px; height: 78px; border-radius: 8px; }
+
+  .modal-content h2 { font-size: 1.5em; }
+  .modal-button { padding: 7px 14px; font-size: 0.82em; }
+}

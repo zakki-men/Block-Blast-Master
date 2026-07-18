@@ -11,7 +11,7 @@
       <div class="top-left-info">
         <div class="info-item">
           <img
-            src="../assets/images/Crown_Icon.png"
+            src="../../assets/images/Crown_Icon.png"
             alt="Ikon Mahkota untuk Skor Terbaik"
             class="icon-small"
           />
@@ -29,7 +29,7 @@
           aria-label="Jeda Game"
         >
           <img
-            src="../assets/images/pause_icon.png"
+            src="../../assets/images/pause_icon.png"
             alt="Ikon Jeda"
             class="icon-small"
           />
@@ -40,7 +40,7 @@
           aria-label="Lanjutkan Game"
         >
           <img
-            src="../assets/images/play_icon.png"
+            src="../../assets/images/play_icon.png"
             alt="Ikon Lanjut"
             class="icon-small"
           />
@@ -51,7 +51,7 @@
           aria-label="Pengaturan Game"
         >
           <img
-            src="../assets/images/Settings_Icon.png"
+            src="../../assets/images/Settings_Icon.png"
             alt="Ikon Pengaturan"
             class="icon-small"
           />
@@ -62,14 +62,14 @@
           aria-label="Mulai Ulang Game"
         >
           <img
-            src="../assets/images/home_icon.png"
+            src="../../assets/images/home_icon.png"
             alt="Ikon Beranda"
             class="icon-small"
           />
         </button>
         <div class="top-currency info-item">
           <img
-            src="../assets/images/Diamond_Icon.png"
+            src="../../assets/images/Diamond_Icon.png"
             alt="Ikon Berlian"
             class="icon-small"
           />
@@ -79,10 +79,12 @@
 
     <main id="game-main-area">
       <div id="game-container">
+        <!-- Papan 8x8 di-generate otomatis oleh script.js (64 kotak sel) -->
         <div id="game-board-wrapper">
           <div id="game-board"></div>
         </div>
 
+        <!-- Bentuk-bentuk blok (L, T, Z, garis, dll) di-generate script.js -->
         <div id="next-blocks-panel">
           <p class="next-blocks-title">BLOK SELANJUTNYA:</p>
           <div id="next-blocks-container"></div>
@@ -135,18 +137,18 @@
 
     <audio
       id="game-music"
-      src="../assets/audio/background_music.mp3"
+      src="../../assets/audio/background_music.mp3"
       loop
       preload="auto"
     ></audio>
     <audio
       id="block-clear-sound"
-      src="../assets/audio/block_clear.mp3"
+      src="../../assets/audio/block_clear.mp3"
       preload="auto"
     ></audio>
     <audio
       id="place-block-sound"
-      src="../assets/audio/place_block.mp3"
+      src="../../assets/audio/place_block.mp3"
       preload="auto"
     ></audio>
 
