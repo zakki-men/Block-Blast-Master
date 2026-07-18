@@ -369,8 +369,14 @@ function renderNextBlocks() {
 
       const boundingBox = getBlockBoundingBox(blockData.shape);
 
-      blockPreview.style.gridTemplateColumns = `repeat(${boundingBox.width}, ${PREVIEW_CELL_SIZE_PX}px)`;
-      blockPreview.style.gridTemplateRows = `repeat(${boundingBox.height}, ${PREVIEW_CELL_SIZE_PX}px)`;
+      const SLOT_INNER_PX = 90;
+      const maxDim = Math.max(boundingBox.width, boundingBox.height);
+      const cellSize = Math.min(PREVIEW_CELL_SIZE_PX, Math.floor(SLOT_INNER_PX / maxDim));
+
+      // Simpan cellSize ke data blok supaya calcDragOffset bisa pakai ukuran yang benar
+      blockData.previewCellSize = cellSize;
+      blockPreview.style.gridTemplateColumns = `repeat(${boundingBox.width}, ${cellSize}px)`;
+      blockPreview.style.gridTemplateRows = `repeat(${boundingBox.height}, ${cellSize}px)`;
 
       for (let r = 0; r < blockData.shape.length; r++) {
         for (let c = 0; c < blockData.shape[r].length; c++) {
@@ -379,6 +385,8 @@ function renderNextBlocks() {
             cell.classList.add("block-cell-preview", blockData.color);
             cell.style.gridRowStart = r - boundingBox.minRow + 1;
             cell.style.gridColumnStart = c - boundingBox.minCol + 1;
+            cell.style.width = `${cellSize}px`;
+            cell.style.height = `${cellSize}px`;
             blockPreview.appendChild(cell);
           }
         }
@@ -483,7 +491,7 @@ function removeGhostPlacement() {
  * Ini memastikan pembagian / CELL_SIZE_PX di ghost & drop menghasilkan
  * indeks sel yang tepat.
  */
-function calcDragOffset(clientX, clientY, slot) {
+function calcDragOffset(clientX, clientY, slot, blockData) {
   const blockPreviewInSlot = slot.querySelector(".draggable-block-preview");
   if (!blockPreviewInSlot) return;
 
@@ -493,9 +501,11 @@ function calcDragOffset(clientX, clientY, slot) {
   const previewClickX = Math.max(0, clientX - slotRect.left);
   const previewClickY = Math.max(0, clientY - slotRect.top);
 
+   const pxPerCell = (blockData && blockData.previewCellSize) ? blockData.previewCellSize : PREVIEW_CELL_SIZE_PX;
+
   // Konversi ke piksel board agar pembagian / CELL_SIZE_PX benar
-  dragOffsetX = (previewClickX / PREVIEW_CELL_SIZE_PX) * CELL_SIZE_PX;
-  dragOffsetY = (previewClickY / PREVIEW_CELL_SIZE_PX) * CELL_SIZE_PX;
+  dragOffsetX = (previewClickX / pxPerCell) * CELL_SIZE_PX;
+  dragOffsetY = (previewClickY / pxPerCell) * CELL_SIZE_PX;
 }
 
 function buildDraggingDOM(blockData, clientX, clientY) {
@@ -546,7 +556,7 @@ nextBlocksContainer.addEventListener("mousedown", (e) => {
   originalDraggedSlotDOM = slot;
 
   // FIX: hitung offset dengan skala yang benar
-  calcDragOffset(e.clientX, e.clientY, slot);
+  calcDragOffset(e.clientX, e.clientY, slot, currentDraggingBlockData);
 
   isDragging = true;
   originalDraggedSlotDOM.style.visibility = "hidden";
@@ -586,7 +596,7 @@ nextBlocksContainer.addEventListener(
     const touch = e.touches[0];
 
     // FIX: hitung offset dengan skala yang benar
-    calcDragOffset(touch.clientX, touch.clientY, slot);
+    calcDragOffset(touch.clientX, touch.clientY, slot, currentDraggingBlockData);
 
     isDragging = true;
     originalDraggedSlotDOM.style.visibility = "hidden";
